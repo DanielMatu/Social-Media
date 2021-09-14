@@ -55,6 +55,12 @@ app.use('/api/posts', postRoute)
 app.use('/api/conversations', conversationRoute)
 app.use('/api/messages', messageRoute)
 
+// app.use(express.static(path.join(__dirname, '/client/build', 'index.html')))
+
+// app.get('*', (req, res) => {
+//     res.sendFile(path.join(__dirname, '/client/build', 'index.html'))
+// })
+
 app.use(express.static(path.join(__dirname, '/client/build', 'index.html')))
 
 app.get('*', (req, res) => {
