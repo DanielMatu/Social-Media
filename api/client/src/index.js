@@ -5,9 +5,10 @@ import { AuthContextProvider } from './context/AuthContext'
 
 ReactDOM.render(
   <React.StrictMode>
-    <AuthContextProvider>
+      <p>just something really simple - shoudlnt cause any problems!</p>
+    {/* <AuthContextProvider>
       <App />
-    </AuthContextProvider>
+    </AuthContextProvider> */}
   </React.StrictMode>,
   document.getElementById('root')
 );
