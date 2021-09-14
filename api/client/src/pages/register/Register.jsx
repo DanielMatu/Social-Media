@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 import './register.css'
-import axios from 'axios'
+import { axiosInstance } from '../../config'
 import { useHistory } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 
@@ -22,7 +22,7 @@ export default function Register() {
                 password: password.current.value,
             }
             try {
-                await axios.post('/auth/register', user)
+                await axiosInstance.post('/auth/register', user)
                 history.push("/login")
             } catch (err) {
                 // finish notes - add unique validation

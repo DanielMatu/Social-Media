@@ -1,7 +1,7 @@
 import "./post.css"
 import { MoreVert } from '@material-ui/icons'
 import { useState, useEffect } from 'react'
-import axios from 'axios'
+import { axiosInstance } from '../../config'
 import { format } from 'timeago.js'
 import { useContext } from 'react'
 import { AuthContext } from '../../context/AuthContext'
@@ -19,7 +19,7 @@ export default function Post({ post }) {
 
     useEffect(() => {
         const fetchUser = async () => {
-            const res = await axios.get(`/user?userId=${post.userId}`)
+            const res = await axiosInstance.get(`/user?userId=${post.userId}`)
             setUser(res.data)
         }
         fetchUser()
@@ -27,7 +27,7 @@ export default function Post({ post }) {
 
     const likeHandler = () => {
         try{
-            axios.put("/posts/" + post._id +"/like" , {userId: currentUser._id})
+            axiosInstance.put("/posts/" + post._id +"/like" , {userId: currentUser._id})
         } catch (err) {
 
         }

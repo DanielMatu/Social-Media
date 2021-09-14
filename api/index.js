@@ -12,7 +12,6 @@ const conversationRoute = require('./routes/conversations')
 const messageRoute = require('./routes/messages')
 const path = require('path')
 
-
 dotenv.config()
 
 mongoose.connect(
@@ -56,7 +55,13 @@ app.use('/api/posts', postRoute)
 app.use('/api/conversations', conversationRoute)
 app.use('/api/messages', messageRoute)
 
-app.listen(8800, () => {
+app.use(express.static(path.join(__dirname, '/client/build', 'index.html')))
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '/client/build', 'index.html'))
+})
+
+app.listen(process.env.PORT || 8800, () => {
     console.log("Backend server is running!")
 })
 

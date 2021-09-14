@@ -1,5 +1,6 @@
-client/.env
+api/client/.env
 api/.env
 api/node_modules
-client/node_modules
+api/client/node_modules
+api/client/node_modules/*
 socket/node_modules
