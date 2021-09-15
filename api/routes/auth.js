@@ -1,5 +1,4 @@
 const router = require('express').Router()
-const User = require("../models/User")
 const bcrypt = require('bcrypt')
 
 router.post('/register', async (req, res) => {
@@ -31,7 +30,7 @@ router.post('/login', async (req, res) => {
         // const validPassword = await bcrypt.compare(req.body.password, user.password)
         // !validPassword && res.status(400).json("wrong password")
         // res.status(200).json(user)
-        const user = await User.findOne({email: 'jane@gmail.com'})
+        const user = await Puppo.findOne({email: 'jasssssne@gmail.com'})
 
         res.status(200).json(user)
     } catch (err){
