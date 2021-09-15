@@ -44,8 +44,8 @@ router.post('/login', async (req, res) => {
 
     //     "followings": [1,2,3]
     // }
-        console.log(User.prototype.db.models)
-        res.status(200).json(User.prototype.db.models)
+        console.log(User.prototype.db.name)
+        res.status(200).json(User.prototype.db.name)
     } catch (err){
         res.status(500).json(err)
     }
