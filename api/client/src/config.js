@@ -7,7 +7,7 @@ if (process.env.NODE_ENV === 'development') {
     })
 } else {
     axiosInstance = axios.create({
-        baseURL: "https://dmatu-social-media.herokuapp.com"
+        baseURL: "https://dmatu-social-media.herokuapp.com/api/"
     })
 }
 
