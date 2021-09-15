@@ -26,6 +26,7 @@ router.post('/register', async (req, res) => {
     } catch (err){
         console.log('heres err')
         console.log(err)
+        console.log(process.env.MONGO_URL)
         res.status(500).send(err)
     }
 })
