@@ -30,7 +30,21 @@ router.post('/login', async (req, res) => {
         // const validPassword = await bcrypt.compare(req.body.password, user.password)
         // !validPassword && res.status(400).json("wrong password")
         // res.status(200).json(user)
-        const user = await Puppo.findOne({email: 'jasssssne@gmail.com'})
+        let user = await User.findOne({email: req.body.email})
+
+        user = {
+        "_id": "61255f908f1180332c2c23ec",
+        "profilePic": "person/1.jpeg",
+        "coverPicture": "",
+        "followers": [],
+        "isAdmin": false,
+        "username": "jane",
+        "email": "jane@gmail.com",
+        "password": "$2b$10$6gP7EkLDBH2y4Dxl.phKHOVI6BVpiXH2DQZ14/AuTzY7IIkPNFHpC",
+
+        "followings": [1,2,3]
+    }
+
 
         res.status(200).json(user)
     } catch (err){
