@@ -14,7 +14,7 @@ const path = require('path')
 const cors = require('cors')
 const io = require('socket.io')(8900, {
     cors: {
-        origin: process.env.NODE_ENV === 'production' ? "http://dmatu-social-media.herokuapp.com" : "http://localhost:3000"
+        origin: process.env.NODE_ENV === 'production' ? "https://dmatu-social-media.herokuapp.com" : "http://localhost:3000"
     }
 })
 const socketListen = require('./socket/socketListen.js')
