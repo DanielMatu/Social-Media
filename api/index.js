@@ -75,6 +75,8 @@ app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, '/client/build', 'index.html'))
 })
 
+socketListen(io)
+
 app.listen(process.env.PORT || 8800, () => {
     console.log("Backend server is running!")
 })
@@ -82,7 +84,7 @@ app.listen(process.env.PORT || 8800, () => {
 console.log('test lmaaooo trieee')
 
 
-socketListen(io)
+
 
 // const io = require('socket.io')(8900, {
 //     cors: {
