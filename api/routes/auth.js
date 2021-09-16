@@ -24,10 +24,6 @@ router.post('/register', async (req, res) => {
         const user = await newUser.save()
         res.status(200).json('user')
     } catch (err){
-        console.log('heres err')
-        console.log(err)
-        console.log(process.env.MONGO_URL)
-        // another build
         res.status(500).send(err)
     }
 })
@@ -40,8 +36,6 @@ router.post('/login', async (req, res) => {
         const validPassword = await bcrypt.compare(req.body.password, user.password)
         !validPassword && res.status(400).json("wrong password")
         res.status(200).json(user)
-        console.log('react app public folder set by heroku')
-        console.log(process.env.REACT_APP_PUBLIC_FOLDER)
     } catch (err){
         res.status(500).json(err)
     }
