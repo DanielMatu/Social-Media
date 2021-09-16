@@ -1,6 +1,10 @@
 const socketListen = (io) => {
     let users = []
 
+    console.log('socket listen started running')
+    console.log('heres io')
+    console.log(io)
+
     const addUser = (userId, socketId) => {
         !users.some(user => user.userId === userId) &&
             users.push({ userId, socketId })

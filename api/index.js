@@ -29,10 +29,6 @@ mongoose.connect(
 });
 
 
-console.log('node shit')
-console.log(process.env.NODE_ENV)
-
-
 app.use('/images', express.static(path.join(__dirname, 'public/images')))
 
 //middleware
