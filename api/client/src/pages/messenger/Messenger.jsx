@@ -25,7 +25,6 @@ export default function Messenger() {
         } else {
             socket.current = io('ws://localhost:8900')
         }
-        socket.current = io('ws://localhost:8900')
         socket.current.on("getMessage", (data) => {
             setArrivalMessage({
                 sender: data.senderId, 
