@@ -40,7 +40,8 @@ router.post('/login', async (req, res) => {
         const validPassword = await bcrypt.compare(req.body.password, user.password)
         !validPassword && res.status(400).json("wrong password")
         res.status(200).json(user)
-        // console.log(User.prototype.db.name)
+        console.log('react app public folder set by heroku')
+        console.log(process.env.REACT_APP_PUBLIC_FOLDER)
     } catch (err){
         res.status(500).json(err)
     }
