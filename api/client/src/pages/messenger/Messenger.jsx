@@ -20,6 +20,11 @@ export default function Messenger() {
     const scrollRef = useRef()
 
     useEffect(() => {
+        if (process.env.NODE_ENV === 'production') {
+            socket.current = io('ws://dmatu-social-media.herokuapp.com:8900')
+        } else {
+            socket.current = io('ws://localhost:8900')
+        }
         socket.current = io('ws://localhost:8900')
         socket.current.on("getMessage", (data) => {
             setArrivalMessage({

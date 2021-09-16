@@ -12,11 +12,7 @@ const conversationRoute = require('./routes/conversations')
 const messageRoute = require('./routes/messages')
 const path = require('path')
 const cors = require('cors')
-const io = require('socket.io')(8900, {
-    cors: {
-        origin: process.env.NODE_ENV === 'production' ? "https://dmatu-social-media.herokuapp.com" : "http://localhost:3000"
-    }
-})
+const socketio = require('socket.io')
 const socketListen = require('./socket/socketListen.js')
 
 dotenv.config()
@@ -75,6 +71,13 @@ app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, '/client/build', 'index.html'))
 })
 
+// socket io listen
+const io = socketio(8900, 
+    {
+    cors: {
+        origin: process.env.NODE_ENV === 'production' ? "https://dmatu-social-media.herokuapp.com" : "http://localhost:3000"
+    }
+})
 socketListen(io)
 
 app.listen(process.env.PORT || 8800, () => {
