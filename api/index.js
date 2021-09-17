@@ -25,7 +25,7 @@ mongoose.connect(
     console.log('Connected to Mongodb')
 });
 
-const hostname = process.env.NODE_ENV === 'production' ? 'dmatu-social-media.herokuapp.com:8900' : 'localhost:3000'
+const hostname = process.env.NODE_ENV === 'production' ? 'dmatu-social-media.herokuapp.com' : 'localhost:3000'
 const helmetDefaultDirectives = helmet.contentSecurityPolicy.getDefaultDirectives()
 
 app.use('/images', express.static(path.join(__dirname, 'public/images')))
