@@ -127,6 +127,9 @@ const io = require('socket.io')(server, {
     allowEIO4: true
 })
 
+console.log('heres heroku port')
+console.log(process.env.PORT)
+
 io.on('connection', () => {console.log('client connected')})
 
 
