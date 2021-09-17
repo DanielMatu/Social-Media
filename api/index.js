@@ -49,7 +49,7 @@ const newHelmetDirectives = {
 
 const outputHelmetDirectives = () => {
     console.log('helmet directives after set')
-    console.log(helmetDefaultDirectives)
+    console.log(newHelmetDirectives)
 }
 setTimeout(outputHelmetDirectives, 10000)
 
