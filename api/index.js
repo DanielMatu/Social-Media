@@ -46,7 +46,7 @@ const newHelmetDirectives = {
         "wss://" + hostname,
         "wss://" + hostname + ':8900',
         "https://" + hostname,
-        "https://" + hostname, + ":8900"
+        "https://" + hostname + ":8900"
     ]
 }
 
