@@ -31,6 +31,7 @@ export default function Messenger() {
         // socket.current = io("ws://localhost:8900")
 
         if (process.env.NODE_ENV === 'production') {
+            socket.current = io('ws://dmatu-social-media.herokuapp.com:' + process.env.PORT)
         } else { 
             socket.current = io('ws://localhost:8800')
         }

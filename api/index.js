@@ -108,7 +108,7 @@ app.get('*', (req, res) => {
 //     console.log('a client connected')
 // })
 
-// const PORT = process.env.PORT || 8800
+const PORT = process.env.PORT || 8800
 // app.listen(PORT, () => {
 //     console.log('Server is up on port ' + PORT)
 // })
@@ -116,14 +116,15 @@ app.get('*', (req, res) => {
 const server = require('http').createServer(app)
 const io = require('socket.io')(server, {
     cors: {
-        origin: 'http://localhost:3000'
+        origin: isProduction 
+        ? 'https://dmatu-social-media.herokuapp.com'
+        : 'http://localhost:3000'
     }
 })
 
 io.on('connection', () => {console.log('client connected')})
 
 
-server.listen(8800, () => {
-    console.log('server up on port ')
-    console.log(server)
+server.listen(PORT, () => {
+    console.log('server up on port ' + PORT)
 })
