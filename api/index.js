@@ -102,7 +102,7 @@ app.get('*', (req, res) => {
 const io = require('socket.io')(8900, {
     cors: {
         origin: isProduction 
-            ? ['https://dmatu-social-media.herokuapp.com'] 
+            ? ['https://dmatu-social-media.herokuapp.com/messenger'] 
             : ['http://localhost:3000']
     }
 })
