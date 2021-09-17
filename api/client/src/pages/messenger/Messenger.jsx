@@ -21,14 +21,15 @@ export default function Messenger() {
 
     useEffect(() => {
         if (process.env.NODE_ENV === 'production') {
-            socket.current = io('https://dmatu-social-media.herokuapp.com:8900')
+            // socket.current = io('https://dmatu-social-media.herokuapp.com:8900')
+            socket.current = io(window.location)
 
         } else {
             socket.current = io('ws://localhost:8900')
-            console.log('heres socket current')
-            console.log(socket.current)
-        }
 
+        }
+        console.log('heres socket current')
+        console.log(socket.current)
         socket.current.on("getMessage", (data) => {
             setArrivalMessage({
                 sender: data.senderId, 
