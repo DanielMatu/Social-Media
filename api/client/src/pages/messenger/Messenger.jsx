@@ -20,16 +20,32 @@ export default function Messenger() {
     const scrollRef = useRef()
 
     useEffect(() => {
+        // if (process.env.NODE_ENV === 'production') {
+        //     socket.current = io('https://dmatu-social-media.herokuapp.com:8900')
+        //     // socket.current = io(window.location)
+
+        // } else {
+        //     socket.current = io('ws://localhost:8900')
+
+        // }
+        // socket.current = io("ws://localhost:8900")
+
         if (process.env.NODE_ENV === 'production') {
-            socket.current = io('https://dmatu-social-media.herokuapp.com/messenger:8900')
-            // socket.current = io(window.location)
-
-        } else {
-            socket.current = io('ws://localhost:8900')
-
+        } else { 
+            socket.current = io('ws://localhost:8800')
         }
-        console.log('heres socket current')
-        console.log(socket.current)
+
+
+        socket.current.on('time', function(timeString) {
+            console.log('lmaoz timestringgg from messgng')
+            console.log(timeString)
+        });
+
+        const outputSlowly = () => {
+            console.log('heres socket current')
+            console.log(socket.current.connected)
+        }
+        setTimeout(outputSlowly, 5000)
         socket.current.on("getMessage", (data) => {
             setArrivalMessage({
                 sender: data.senderId, 

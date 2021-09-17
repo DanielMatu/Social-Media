@@ -13,8 +13,9 @@ const messageRoute = require('./routes/messages')
 const path = require('path')
 const cors = require('cors')
 const http = require('http')
-const https = require('https')
-const { Server } = require('socket.io')
+// const https = require('https')
+// const { Server } = require('socket.io')
+const socketIO = require('socket.io')
 const socketListen = require('./socket/socketListen.js')
 
 dotenv.config()
@@ -36,29 +37,25 @@ app.use('/images', express.static(path.join(__dirname, 'public/images')))
 
 //middleware
 app.use(express.json())
-app.use(helmet())
+// app.use(helmet())
 app.use(morgan("common"))
 app.use(cors())
 
-console.log('helmet directives before set')
-console.log(helmetDefaultDirectives)
 
 const newHelmetDirectives = {
     ...helmetDefaultDirectives,
     connectSrc: [
         "'self'",
         "wss://" + hostname,
-        "wss://" + hostname + ':8900',
         "https://" + hostname,
-        "https://" + hostname + ":8900"
     ]
 }
 
-const outputHelmetDirectives = () => {
-    console.log('helmet directives after set')
-    console.log(newHelmetDirectives)
-}
-setTimeout(outputHelmetDirectives, 10000)
+// const outputHelmetDirectives = () => {
+//     console.log('helmet directives after set')
+//     console.log(newHelmetDirectives)
+// }
+// setTimeout(outputHelmetDirectives, 10000)
 
 //security with helmet for socketio
 app.use(helmet.contentSecurityPolicy({
@@ -75,16 +72,16 @@ const storage = multer.diskStorage({
     }
 })
 
-const upload = multer({storage})
-app.post("/api/upload", upload.single("file"), (req, res) => {
-    console.log('upload route')
-    console.log(req.body.file)
-    try {
-        return res.status(200).json('File uploaded successfully')
-    } catch (err) {
-        console.log(err)
-    }
-})
+// const upload = multer({storage})
+// app.post("/api/upload", upload.single("file"), (req, res) => {
+//     console.log('upload route')
+//     console.log(req.body.file)
+//     try {
+//         return res.status(200).json('File uploaded successfully')
+//     } catch (err) {
+//         console.log(err)
+//     }
+// })
 
 app.use('/api/user', userRoute)
 app.use('/api/auth', authRoute)
@@ -99,20 +96,34 @@ app.get('*', (req, res) => {
 })
 
 
-const io = require('socket.io')(8900, {
+
+
+// const io = require('socket.io')(8900, {
+//     cors: {
+//         origin: 'http://localhost:3000'
+//     }
+// })
+
+// io.on('connection', (socket) => {
+//     console.log('a client connected')
+// })
+
+// const PORT = process.env.PORT || 8800
+// app.listen(PORT, () => {
+//     console.log('Server is up on port ' + PORT)
+// })
+
+const server = require('http').createServer(app)
+const io = require('socket.io')(server, {
     cors: {
-        origin: isProduction 
-            ? ['https://dmatu-social-media.herokuapp.com/messenger'] 
-            : ['http://localhost:3000']
+        origin: 'http://localhost:3000'
     }
 })
 
-socketListen(io)
+io.on('connection', () => {console.log('client connected')})
 
 
-
-
-app.listen(process.env.PORT || 8800, () => {
-    console.log("Backend server is running!")
+server.listen(8800, () => {
+    console.log('server up on port ')
+    console.log(server)
 })
-
