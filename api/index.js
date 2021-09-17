@@ -12,6 +12,7 @@ const conversationRoute = require('./routes/conversations')
 const messageRoute = require('./routes/messages')
 const path = require('path')
 const cors = require('cors')
+const http = require('http')
 const socketio = require('socket.io')
 const socketListen = require('./socket/socketListen.js')
 
@@ -24,6 +25,8 @@ mongoose.connect(
     console.log('Connected to Mongodb')
 });
 
+const hostname = process.env.NODE_ENV === 'production' ? 'dmatu-social-media.herokuapp.com' : 'localhost:3000'
+
 
 app.use('/images', express.static(path.join(__dirname, 'public/images')))
 
@@ -32,6 +35,16 @@ app.use(express.json())
 app.use(helmet())
 app.use(morgan("common"))
 app.use(cors())
+
+
+
+//security with helmet for socketio
+app.use(helmet.contentSecurityPolicy({
+    connectSrc: [
+        "'self'",
+        "ws://" + hostname
+    ]
+}))
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -79,6 +92,9 @@ const io = socketio(8900,
     }
 })
 socketListen(io)
+
+
+
 
 
 app.listen(process.env.PORT || 8800, () => {
