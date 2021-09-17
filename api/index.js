@@ -25,6 +25,8 @@ mongoose.connect(
     console.log('Connected to Mongodb')
 });
 
+
+
 const hostname = process.env.NODE_ENV === 'production' ? 'dmatu-social-media.herokuapp.com' : 'localhost:3000'
 const helmetDefaultDirectives = helmet.contentSecurityPolicy.getDefaultDirectives()
 
@@ -101,15 +103,24 @@ app.get('*', (req, res) => {
 })
 
 // socket io listen
-const io = socketio(8900, 
-    {
+// const io = socketio(8900, 
+//     {
+//     cors: {
+//         origin: process.env.NODE_ENV === 'production' ? "*" : "http://localhost:3000"
+//     }
+// })
+// socketListen(io)
+
+
+const httpServer = http.createServer(app)
+const io = socketio(httpServer, {
     cors: {
-        origin: process.env.NODE_ENV === 'production' ? "*" : "http://localhost:3000"
-    }
+        origin: process.env.NODE_ENV === 'production' ? "*" : "http://localhost:3000",
+        methods: ['GET', 'POST'],
+        credentials: true
+    }    
 })
 socketListen(io)
-
-
 
 
 
