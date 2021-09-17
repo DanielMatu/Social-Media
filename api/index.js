@@ -36,18 +36,25 @@ app.use(helmet())
 app.use(morgan("common"))
 app.use(cors())
 
+console.log('helmet directives before set')
+console.log(helmetDefaultDirectives)
+
+const newHelmetDirectives = {
+    ...helmetDefaultDirectives,
+    connectSrc: [
+        "'self'",
+        "ws://" + hostname
+    ]
+}
+
 
 
 //security with helmet for socketio
 app.use(helmet.contentSecurityPolicy({
-    directives: {
-        ...helmetDefaultDirectives,
-        connectSrc: [
-            "'self'",
-            "ws://" + hostname
-        ]
-    }
+    directives: newHelmetDirectives
 }))
+console.log('helmet directives after set')
+console.log(helmetDefaultDirectives)
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
