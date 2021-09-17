@@ -43,7 +43,10 @@ const newHelmetDirectives = {
     ...helmetDefaultDirectives,
     connectSrc: [
         "'self'",
-        "wss://" + hostname
+        "wss://" + hostname,
+        "wss://" + hostname + ':8900',
+        "https://" + hostname,
+        "https://" + hostname, + ":8900"
     ]
 }
 
