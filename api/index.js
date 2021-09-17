@@ -40,10 +40,12 @@ app.use(cors())
 
 //security with helmet for socketio
 app.use(helmet.contentSecurityPolicy({
-    connectSrc: [
-        "'self'",
-        "ws://" + hostname
-    ]
+    directives: {
+        connectSrc: [
+            "'self'",
+            "ws://" + hostname
+        ]
+    }
 }))
 
 const storage = multer.diskStorage({
