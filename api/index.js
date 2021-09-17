@@ -118,8 +118,12 @@ const io = require('socket.io')(server, {
     cors: {
         origin: isProduction 
         ? 'https://dmatu-social-media.herokuapp.com'
-        : 'http://localhost:3000'
-    }
+        : 'http://localhost:3000',
+        methods: ['GET', 'POST'],
+        transports: ['websocket', 'polling'],
+        credentials: true
+    },
+    allowEIO3: true
 })
 
 io.on('connection', () => {console.log('client connected')})
