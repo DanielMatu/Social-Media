@@ -41,6 +41,7 @@ app.use(cors())
 //security with helmet for socketio
 app.use(helmet.contentSecurityPolicy({
     directives: {
+        defaultSrc: ["'self'"],
         connectSrc: [
             "'self'",
             "ws://" + hostname
