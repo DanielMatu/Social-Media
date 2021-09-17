@@ -43,6 +43,7 @@ const socketListen = (io) => {
             io.emit("getUsers", users)
         })
     })
+
 }
 
 module.exports = socketListen

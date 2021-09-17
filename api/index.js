@@ -13,7 +13,8 @@ const messageRoute = require('./routes/messages')
 const path = require('path')
 const cors = require('cors')
 const http = require('http')
-const socketio = require('socket.io')
+const https = require('https')
+const { Server } = require('socket.io')
 const socketListen = require('./socket/socketListen.js')
 
 dotenv.config()
@@ -29,6 +30,7 @@ mongoose.connect(
 
 const hostname = process.env.NODE_ENV === 'production' ? 'dmatu-social-media.herokuapp.com' : 'localhost:3000'
 const helmetDefaultDirectives = helmet.contentSecurityPolicy.getDefaultDirectives()
+const isProduction = process.env.NODE_ENV === 'production'
 
 app.use('/images', express.static(path.join(__dirname, 'public/images')))
 
@@ -90,37 +92,23 @@ app.use('/api/posts', postRoute)
 app.use('/api/conversations', conversationRoute)
 app.use('/api/messages', messageRoute)
 
-// app.use(express.static(path.join(__dirname, '/client/build', 'index.html')))
-
-// app.get('*', (req, res) => {
-//     res.sendFile(path.join(__dirname, '/client/build', 'index.html'))
-// })
-
 app.use(express.static(path.join(__dirname, '/client/build')))
 
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, '/client/build', 'index.html'))
 })
 
-// socket io listen
-// const io = socketio(8900, 
-//     {
-//     cors: {
-//         origin: process.env.NODE_ENV === 'production' ? "*" : "http://localhost:3000"
-//     }
-// })
-// socketListen(io)
 
-
-const httpServer = http.createServer(app)
-const io = socketio(httpServer, {
+const io = require('socket.io')(8900, {
     cors: {
-        origin: process.env.NODE_ENV === 'production' ? "*" : "http://localhost:3000",
-        methods: ['GET', 'POST'],
-        credentials: true
-    }    
+        origin: isProduction 
+            ? ['https://dmatu-social-media.herokuapp.com'] 
+            : ['http://localhost:3000']
+    }
 })
+
 socketListen(io)
+
 
 
 
@@ -128,54 +116,3 @@ app.listen(process.env.PORT || 8800, () => {
     console.log("Backend server is running!")
 })
 
-console.log('test lmaaooo trieee')
-
-
-
-
-// const io = require('socket.io')(8900, {
-//     cors: {
-//         origin: process.env.NODE_ENV === 'production' ? "http://dmatu-social-media.herokuapp.com" : "http://localhost:3000"
-//     }
-// })
-
-// let users = []
-
-// const addUser = (userId, socketId) => {
-//     !users.some(user => user.userId === userId) &&
-//         users.push({ userId, socketId })
-// }
-
-// const removeUser = (socketId) => {
-//     users = users.filter(user => user.socketId !== socketId)
-// }
-
-// const getUser = (userId) => {
-//     return users.find(user => user.userId === userId)
-// }
-
-// io.on('connection', (socket) => {
-//     //when connect
-//     console.log('a user connected')
-//     // take userId and socketId from user
-//     socket.on('addUser', (userId) => {
-//         addUser(userId, socket.id)
-//         io.emit("getUsers", users)
-//     })
-
-//     //send and get message
-//     socket.on("sendMessage", ({ senderId, receiverId, text }) => {
-//         const user = getUser(receiverId)
-//         io.to(user.socketId).emit('getMessage', {
-//             senderId, 
-//             text,
-//         })
-//     })
-
-//     //when disconnect
-//     socket.on('disconnect', () => {
-//         console.log("a user disconnected!")
-//         removeUser(socket.id)
-//         io.emit("getUsers", users)
-//     })
-// })
