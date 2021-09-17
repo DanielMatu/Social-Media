@@ -47,14 +47,17 @@ const newHelmetDirectives = {
     ]
 }
 
-
+const outputHelmetDirectives = () => {
+    console.log('helmet directives after set')
+    console.log(helmetDefaultDirectives)
+}
+setTimeout(outputHelmetDirectives, 10000)
 
 //security with helmet for socketio
 app.use(helmet.contentSecurityPolicy({
     directives: newHelmetDirectives
 }))
-console.log('helmet directives after set')
-console.log(helmetDefaultDirectives)
+
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
