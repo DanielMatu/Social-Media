@@ -123,7 +123,8 @@ const io = require('socket.io')(server, {
         transports: ['websocket', 'polling'],
         credentials: true
     },
-    allowEIO3: true
+    allowEIO3: true,
+    allowEIO4: true
 })
 
 io.on('connection', () => {console.log('client connected')})
