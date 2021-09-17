@@ -75,7 +75,7 @@ app.get('*', (req, res) => {
 const io = socketio(8900, 
     {
     cors: {
-        origin: process.env.NODE_ENV === 'production' ? "https://dmatu-social-media.herokuapp.com" : "http://localhost:3000"
+        origin: process.env.NODE_ENV === 'production' ? "https://dmatu-social-media.herokuapp.com:80" : "http://localhost:3000"
     }
 })
 socketListen(io)
