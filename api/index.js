@@ -26,7 +26,7 @@ mongoose.connect(
 });
 
 const hostname = process.env.NODE_ENV === 'production' ? 'dmatu-social-media.herokuapp.com' : 'localhost:3000'
-
+const helmetDefaultDirectives = helmet.contentSecurityPolicy.getDefaultDirectives()
 
 app.use('/images', express.static(path.join(__dirname, 'public/images')))
 
@@ -41,7 +41,7 @@ app.use(cors())
 //security with helmet for socketio
 app.use(helmet.contentSecurityPolicy({
     directives: {
-        defaultSrc: ["'self'"],
+        ...helmetDefaultDirectives,
         connectSrc: [
             "'self'",
             "ws://" + hostname
