@@ -106,8 +106,11 @@ const io = require('socket.io')(server, {
     }
 })
 
+console.log('tried to do socket listen')
+console.log(io)
 socketListen(io)
-
+console.log('just tried to start it ')
+console.log(io)
 
 server.listen(PORT, () => {
     console.log('server up on port ' + PORT)

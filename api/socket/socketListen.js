@@ -1,6 +1,5 @@
 const socketListen = (io) => {
     let users = []
-
     console.log('socket listen started running')
     console.log('heres io')
     console.log(io)
