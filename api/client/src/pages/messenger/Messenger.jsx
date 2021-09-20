@@ -22,7 +22,9 @@ export default function Messenger() {
     useEffect(() => {
 
         if (process.env.NODE_ENV === 'production') {
-            socket.current = io('wss://dmatu-social-media.herokuapp.com/socket.io/?EIO=4&transport=websocket')
+            // socket.current = io('wss://dmatu-social-media.herokuapp.com/socket.io/?EIO=4&transport=websocket')
+            socket.current = io('wss://dmatu-social-media.herokuapp.com')
+
         } else { 
             socket.current = io('ws://localhost:8800')
         }
