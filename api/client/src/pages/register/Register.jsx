@@ -1,9 +1,11 @@
-import { useRef, useEffect } from 'react'
+import { useRef, useEffect, useContext } from 'react'
 import './register.css'
 import { axiosInstance } from '../../config'
 import { useHistory } from 'react-router-dom'
 import { Link } from 'react-router-dom'
-import { io } from 'socket.io-client'
+import { loginCall } from '../../apiCalls'
+import { AuthContext } from '../../context/AuthContext'
+import { dispatch } from '../../context/AuthContext'
 
 export default function Register() {
     const username = useRef()
@@ -11,6 +13,7 @@ export default function Register() {
     const password = useRef()
     const passwordAgain = useRef()
     const history = useHistory()
+    const { dispatch } = useContext(AuthContext)
 
     const handleClick = async (e) => {
         e.preventDefault()
@@ -24,6 +27,8 @@ export default function Register() {
             }
             try {
                 await axiosInstance.post('/auth/register', user)
+                loginCall({email:email.current.value, password:password.current.value}, dispatch)
+
                 history.push("/login")
             } catch (err) {
                 // finish notes - add unique validation

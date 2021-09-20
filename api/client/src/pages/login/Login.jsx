@@ -3,7 +3,6 @@ import { useRef, useContext } from 'react'
 import { loginCall } from '../../apiCalls'
 import { AuthContext } from '../../context/AuthContext'
 import { CircularProgress } from '@material-ui/core'
-import { axiosInstance } from '../../config'
 
 export default function Login() {
     const email = useRef()
