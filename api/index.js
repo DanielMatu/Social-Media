@@ -37,11 +37,11 @@ app.use('/images', express.static(path.join(__dirname, 'public/images')))
 
 //middleware
 app.use(express.json())
-// app.use(helmet())
+app.use(helmet())
 app.use(morgan("common"))
 app.use(cors())
 
-
+// finish notes - remove the * eventually
 const newHelmetDirectives = {
     ...helmetDefaultDirectives,
     connectSrc: [
@@ -106,11 +106,11 @@ const io = require('socket.io')(server, {
     }
 })
 
-console.log('tried to do socket listen')
-console.log(io)
+console.log('sockets before listen')
+console.log(io.sockets._events)
 socketListen(io)
-console.log('just tried to start it ')
-console.log(io)
+console.log('sockets after listen ')
+console.log(io.sockets._events)
 
 server.listen(PORT, () => {
     console.log('server up on port ' + PORT)

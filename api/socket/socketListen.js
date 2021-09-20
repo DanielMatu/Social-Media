@@ -1,9 +1,6 @@
 const socketListen = (io) => {
     let users = []
-    console.log('socket listen started running')
-    console.log('heres io')
-    console.log(io)
-
+    
     const addUser = (userId, socketId) => {
         !users.some(user => user.userId === userId) &&
             users.push({ userId, socketId })
@@ -16,6 +13,10 @@ const socketListen = (io) => {
     const getUser = (userId) => {
         return users.find(user => user.userId === userId)
     }
+
+    io.on('lmaothissomedumbshit', () => {
+        console.log('lul')
+    })
 
     io.on('connection', (socket) => {
         //when connect
