@@ -1,6 +1,6 @@
 const socketListen = (io) => {
     let users = []
-    
+
     const addUser = (userId, socketId) => {
         !users.some(user => user.userId === userId) &&
             users.push({ userId, socketId })
@@ -14,11 +14,13 @@ const socketListen = (io) => {
         return users.find(user => user.userId === userId)
     }
 
+    // finish notes - remove this ctrlf event
     io.on('lmaothissomedumbshit', () => {
         console.log('lul')
     })
 
-    io.on('connection', (socket) => {
+    // can also be io.on
+    io.sockets.on('connection', (socket) => {
         //when connect
         console.log('a user connected')
         // take userId and socketId from user

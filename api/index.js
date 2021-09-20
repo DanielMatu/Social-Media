@@ -102,7 +102,8 @@ const server = require('http').createServer(app)
 origin = isProduction ? 'https://dmatu-social-media.herokuapp.com' : 'http://localhost:3000'
 const io = require('socket.io')(server, {
     cors: {
-        origin
+        // switch back to just 'origin: origin' eventually finish notes
+        origin: "*"
     }
 })
 
