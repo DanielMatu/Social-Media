@@ -13,21 +13,31 @@ export default function Rightbar({ user }) {
     const { user: currentUser, dispatch } = useContext(AuthContext)
     const [followed, setFollowed] = useState(currentUser.followings.includes(user?.id))
 
-    // useEffect(() => {
-    //     setFollowed(currentUser.followings.includes(user?.id))
-    // }, [currentUser, user.id])
+    useEffect(() => {
+        setFollowed(currentUser.followings.includes(user?.id))
+    }, [currentUser, user?.id])
 
     useEffect(() => {
         const getFriends = async () => {
             try {
-                const friendList = await axiosInstance.get('/user/friends/' + currentUser._id)
+                let friendList
+                if (user && Object.keys(user).length !== 0) {
+                    console.log('target user exists')
+                    console.log(user)
+                    friendList = await axiosInstance.get('/user/friends/' + user._id)
+                } else { 
+                    console.log('target user doesnt exist')
+                    friendList = await axiosInstance.get('/user/friends/' + currentUser._id)
+                }
+
                 setFriends(friendList.data)
+
             } catch (err) {
                 console.log(err)
             }
         }
         getFriends()
-    }, [currentUser])
+    }, [currentUser, user?.id])
 
     const handleClick = async () => {
         try {
