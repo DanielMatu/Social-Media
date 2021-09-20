@@ -1,8 +1,9 @@
-import { useRef } from 'react'
+import { useRef, useEffect } from 'react'
 import './register.css'
 import { axiosInstance } from '../../config'
 import { useHistory } from 'react-router-dom'
 import { Link } from 'react-router-dom'
+import { io } from 'socket.io-client'
 
 export default function Register() {
     const username = useRef()

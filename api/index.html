@@ -1,0 +1,14 @@
+<html>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.2.0/socket.io.js"></script>
+    <script>
+        console.log('runing scrit')
+        var socket = io('http://localhost:3001')
+        console.log(socket)
+        // this is the part i was missing, socket.on ...lmao
+        socket.on('connect', function () {
+            console.log('connected')
+            console.log(socket)
+        })
+    </script>
+    test
+</html>

@@ -20,21 +20,16 @@ export default function Messenger() {
     const scrollRef = useRef()
 
     useEffect(() => {
-        // if (process.env.NODE_ENV === 'production') {
-        //     socket.current = io('https://dmatu-social-media.herokuapp.com:8900')
-        //     // socket.current = io(window.location)
-
-        // } else {
-        //     socket.current = io('ws://localhost:8900')
-
-        // }
-        // socket.current = io("ws://localhost:8900")
 
         if (process.env.NODE_ENV === 'production') {
             socket.current = io('wss://dmatu-social-media.herokuapp.com/socket.io/?EIO=4&transport=websocket')
         } else { 
             socket.current = io('ws://localhost:8800')
         }
+
+        socket.current.on('connect', () => {
+            console.log('connected')
+        })
 
 
         socket.current.on('time', function(timeString) {

@@ -48,6 +48,7 @@ const newHelmetDirectives = {
         "'self'",
         "wss://" + hostname,
         "https://" + hostname,
+        '*'
     ]
 }
 
@@ -72,16 +73,16 @@ const storage = multer.diskStorage({
     }
 })
 
-// const upload = multer({storage})
-// app.post("/api/upload", upload.single("file"), (req, res) => {
-//     console.log('upload route')
-//     console.log(req.body.file)
-//     try {
-//         return res.status(200).json('File uploaded successfully')
-//     } catch (err) {
-//         console.log(err)
-//     }
-// })
+const upload = multer({storage})
+app.post("/api/upload", upload.single("file"), (req, res) => {
+    console.log('upload route')
+    console.log(req.body.file)
+    try {
+        return res.status(200).json('File uploaded successfully')
+    } catch (err) {
+        console.log(err)
+    }
+})
 
 app.use('/api/user', userRoute)
 app.use('/api/auth', authRoute)
@@ -95,42 +96,17 @@ app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, '/client/build', 'index.html'))
 })
 
-
-
-
-// const io = require('socket.io')(8900, {
-//     cors: {
-//         origin: 'http://localhost:3000'
-//     }
-// })
-
-// io.on('connection', (socket) => {
-//     console.log('a client connected')
-// })
-
 const PORT = process.env.PORT || 8800
-// app.listen(PORT, () => {
-//     console.log('Server is up on port ' + PORT)
-// })
 
 const server = require('http').createServer(app)
+origin = isProduction ? 'https://dmatu-social-media.herokuapp.com' : 'http://localhost:3000'
 const io = require('socket.io')(server, {
     cors: {
-        origin: isProduction 
-        ? 'https://dmatu-social-media.herokuapp.com'
-        : 'http://localhost:3000',
-        methods: ['GET', 'POST'],
-        transports: ['websocket', 'polling'],
-        credentials: true
-    },
-    allowEIO3: true,
-    allowEIO4: true
+        origin
+    }
 })
 
-console.log('heres heroku port')
-console.log(process.env.PORT)
-
-io.on('connection', () => {console.log('client connected')})
+socketListen(io)
 
 
 server.listen(PORT, () => {
