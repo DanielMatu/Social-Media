@@ -3,6 +3,7 @@ import { useRef, useContext } from 'react'
 import { loginCall } from '../../apiCalls'
 import { AuthContext } from '../../context/AuthContext'
 import { CircularProgress } from '@material-ui/core'
+import { Link } from 'react-router-dom'
 
 export default function Login() {
     const email = useRef()
@@ -10,7 +11,7 @@ export default function Login() {
     const { user, isFetching, error, dispatch } = useContext(AuthContext)
     const handleClick = (e) => {
         e.preventDefault()
-        loginCall({email:email.current.value, password:password.current.value}, dispatch)
+        loginCall({ email: email.current.value, password: password.current.value }, dispatch)
     }
 
     return (
@@ -25,12 +26,14 @@ export default function Login() {
                         <input placeholder="Email" type='email' className='loginInput' ref={email} />
                         <input required placeholder="Password" type='password' minLength="6" className='loginInput' ref={password} />
                         <button className="loginButton" disabled={isFetching}>
-                            {isFetching ? <CircularProgress color='white' size="20px"/> : "Log in"}
+                            {isFetching ? <CircularProgress color='white' size="20px" /> : "Log in"}
                         </button>
                         <span className='loginForgot'>Forgot password?</span>
-                        <button className="loginRegisterButton" disabled={isFetching}>
-                            {isFetching ? <CircularProgress color={'white'} size="20px"/> : "Create a New Account"}
-                        </button>
+                        <Link to='/register' className='linkToLogin'>
+                            <button className="loginRegisterButton" disabled={isFetching}>
+                                {isFetching ? <CircularProgress color={'white'} size="20px" /> : "Create a New Account"}
+                            </button>
+                        </Link>
                     </form>
                 </div>
             </div>

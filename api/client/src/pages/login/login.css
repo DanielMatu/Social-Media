@@ -77,6 +77,10 @@
     color: #1775ee;
 }
 
+.linkToLogin {
+    text-align:center;
+}
+
 .loginRegisterButton {
     width: 60%;
     align-self: center;
