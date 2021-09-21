@@ -19,7 +19,7 @@ export default function Topbar() {
         let partsOfName
         allUsers.data.map((u) => {
             partsOfName = u.username.split(' ')
-            partsOfName.some((name) => name === searchbarText.current.value) && filteredUsers.push(u)
+            partsOfName.some((name) => searchbarText.current.value.includes(name)) && filteredUsers.push(u)
         })
         history.push({
             pathname: '/search',
