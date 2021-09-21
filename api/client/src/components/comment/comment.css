@@ -1,0 +1,28 @@
+.comment {
+    border-radius: 10px;
+    /* border: 1px solid lightgray; */
+    padding: 10px;
+    margin: 5px 0;
+}
+
+.commentTop {
+    display: flex;
+    align-items: center;
+}
+
+.commentTimeAgo {
+    color: gray;
+}
+
+.commentProfilePic {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 10px;
+}   
+
+.commentBody {
+    /* margin-top: 5px; */
+    margin-left: 42px;
+}

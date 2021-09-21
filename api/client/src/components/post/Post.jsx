@@ -5,13 +5,28 @@ import { axiosInstance } from '../../config'
 import { format } from 'timeago.js'
 import { useContext } from 'react'
 import { AuthContext } from '../../context/AuthContext'
+import Comment from '../comment/Comment'
 
 export default function Post({ post }) {
     const [like, setLike] = useState(post.likes.length)
     const [isLiked, setIsLiked] = useState(false)
     const [user, setUser] = useState({})
+    const [comments, setComments] = useState([])
     const PF = process.env.REACT_APP_PUBLIC_FOLDER
     const { user: currentUser } = useContext(AuthContext)
+
+    useEffect(() => {
+
+        const populateComments = async () => {
+            const res = await axiosInstance.get(`/comments/${post._id}`)
+            setComments(res.data)
+        }
+        populateComments()
+        console.log('just populated them')
+
+        // <Comment sender="jane" text="heres janes test comment"/>
+
+    }, [post])
 
     useEffect(() => {
         setIsLiked(post.likes.includes(currentUser._id))
@@ -26,8 +41,8 @@ export default function Post({ post }) {
     }, [post.userId])
 
     const likeHandler = () => {
-        try{
-            axiosInstance.put("/posts/" + post._id +"/like" , {userId: currentUser._id})
+        try {
+            axiosInstance.put("/posts/" + post._id + "/like", { userId: currentUser._id })
         } catch (err) {
 
         }
@@ -39,12 +54,12 @@ export default function Post({ post }) {
             <div className="postWrapper">
                 <div className="postTop">
                     <div className="postTopLeft">
-                        <img className='postProfileImg' 
-                            src={user.profilePic 
-                                    ? PF + user.profilePic
-                                    : PF + "person/noAvatar.png"
-                                } 
-                            alt="" 
+                        <img className='postProfileImg'
+                            src={user.profilePic
+                                ? PF + user.profilePic
+                                : PF + "person/noAvatar.png"
+                            }
+                            alt=""
                         />
                         <span className="postUsername">
                             {user.username}
@@ -70,6 +85,13 @@ export default function Post({ post }) {
                             {post.comment} comments
                         </span>
                     </div>
+                </div>
+                <div className="postComments">
+                    {
+                        comments.map((c) => (
+                            <Comment key={c._id} comment={c} />
+                        ))
+                    }
                 </div>
             </div>
         </div>
