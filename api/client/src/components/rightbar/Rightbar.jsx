@@ -11,20 +11,22 @@ export default function Rightbar({ user }) {
     const PF = process.env.REACT_APP_PUBLIC_FOLDER
     const [friends, setFriends] = useState([])
     const { user: currentUser, dispatch } = useContext(AuthContext)
-    const [followed, setFollowed] = useState(currentUser.followings.includes(user?.id))
+    const [targetUser, setTargetUser] = useState(user)
+    const [followed, setFollowed] = useState(currentUser.followings.includes(targetUser?._id))
 
     useEffect(() => {
-        setFollowed(currentUser.followings.includes(user?.id))
-    }, [currentUser, user?.id])
+        setFollowed(currentUser.followings.includes(targetUser?._id))
+    }, [currentUser, targetUser])
 
     useEffect(() => {
+        console.log('use effect rightbar triggered')
+        console.log('target rightbar')
+        console.log(targetUser)
         const getFriends = async () => {
             try {
                 let friendList
-                if (user && Object.keys(user).length !== 0) {
-                    console.log('target user exists')
-                    console.log(user)
-                    friendList = await axiosInstance.get('/user/friends/' + user._id)
+                if (targetUser && Object.keys(targetUser).length !== 0) {
+                    friendList = await axiosInstance.get('/user/friends/' + targetUser._id)
                 } else { 
                     console.log('target user doesnt exist')
                     friendList = await axiosInstance.get('/user/friends/' + currentUser._id)
@@ -37,20 +39,20 @@ export default function Rightbar({ user }) {
             }
         }
         getFriends()
-    }, [currentUser, user?.id])
+    }, [currentUser, targetUser])
 
     const handleClick = async () => {
         try {
             if (followed){
-                await axiosInstance.put('/user/' + user._id + "/unfollow", {
+                await axiosInstance.put('/user/' + targetUser._id + "/unfollow", {
                     userId: currentUser._id
                 })
-                dispatch({type: "UNFOLLOW", payload:user._id})
+                dispatch({type: "UNFOLLOW", payload:targetUser._id})
             } else {
-                await axiosInstance.put('/user/' + user._id + "/follow", {
+                await axiosInstance.put('/user/' + targetUser._id + "/follow", {
                     userId: currentUser._id
                 })
-                dispatch({type: "FOLLOW", payload:user._id})
+                dispatch({type: "FOLLOW", payload:targetUser._id})
             }
         } catch (err) {
             console.log(err)
@@ -111,7 +113,12 @@ export default function Rightbar({ user }) {
                 <h4 className='rightbarTitle'>User friends</h4>
                 <div className='rightbarFollowings'>
                     {friends.map((friend) => (
-                        <Link key={friend._id} to={"/profile/" + friend.username} style={{textDecoration:"none"}}>
+                        <Link 
+                            key={friend._id} 
+                            to={"/profile/" + friend.username} 
+                            style={{textDecoration:"none"}}
+                            onClick={() => setTargetUser(friend)}
+                            >
                             <div className='rightbarFollowing'>
                                 <img
                                     src={friend.profilePicture
