@@ -11,6 +11,7 @@ import {
 import { useContext } from "react";
 import { AuthContext } from "./context/AuthContext";
 import Messenger from "./pages/messenger/Messenger";
+import Search from "./pages/search/Search";
 
 function App() {
 
@@ -32,6 +33,9 @@ function App() {
           </Route>
           <Route path="/profile/:username">
             {!user ? <Redirect to="/" /> : <Profile />}
+          </Route>
+          <Route path="/search">
+            {!user ? <Redirect to="/" /> : <Search />}
           </Route>
         </Switch>
     </Router>
