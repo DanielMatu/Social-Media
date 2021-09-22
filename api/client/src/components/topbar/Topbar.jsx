@@ -5,6 +5,7 @@ import { useContext, useRef } from 'react'
 import { AuthContext } from '../../context/AuthContext'
 import { axiosInstance } from '../../config'
 import { useHistory } from 'react-router-dom'
+import InputAdornment from "@material-ui/core/InputAdornment";
 
 export default function Topbar() {
     const { user } = useContext(AuthContext)
@@ -28,49 +29,69 @@ export default function Topbar() {
 
     }
     return (
-        <div className='topbarContainer'>
-            <div className="topbarLeft">
-                <Link to='/' style={{ textDecoration: 'none' }}>
-                    <span className="logo">Lamasocial</span>
-                </Link>
-            </div>
-            <div className="topbarCenter">
-                <form className="searchBar" onSubmit={(e) => search(e)}>
-                    <Search className='searchIcon' />
-                    <input ref={searchbarText} placeholder="Search for friends" className="searchInput" />
-                </form>
-            </div>
-            <div className="topbarRight">
-                <div className="topbarIcons">
-                    <div className="topbarIconItem">
-                        <Person />
-                        <span className="topbarIconBadge">1</span>
-                    </div>
-
-                    <div className="topbarIconItem">
-                        <Link to='/messenger'>
-                            <Chat />
-                        </Link>
-                        <span className="topbarIconBadge">2</span>
-                    </div>
-
-                    <div className="topbarIconItem">
-                        <Notifications />
-                        <span className="topbarIconBadge">1</span>
-                    </div>
+        <>
+            <div className='topbarContainer'>
+                <div className="topbarLeft">
+                    <Link to='/' style={{ textDecoration: 'none' }}>
+                        <span className="logo">Lamasocial</span>
+                    </Link>
                 </div>
-                <Link to={`/profile/${user.username}`}>
-                    <img
-                        src={
-                            user.profilePic
-                                ? PF + user.profilePic
-                                : PF + "person/noAvatar.png"
-                        }
-                        alt="" className="topbarImg"
-                    />
-                </Link>
+                <div className="topbarCenter">
+                    <form className="searchBar" onSubmit={(e) => search(e)}>
+                        <Search className='searchIcon' />
+                        <input ref={searchbarText} placeholder="Search for friends" className="searchInput" />
+                    </form>
+                </div>
+                <div className="topbarRight">
+                    <div className="topbarIcons">
+                        <div className="topbarIconItem">
+                            <Person />
+                            <span className="topbarIconBadge">1</span>
+                        </div>
+
+                        <div className="topbarIconItem">
+                            <Link to='/messenger'>
+                                <Chat />
+                            </Link>
+                            <span className="topbarIconBadge">2</span>
+                        </div>
+
+                        <div className="topbarIconItem">
+                            <Notifications />
+                            <span className="topbarIconBadge">1</span>
+                        </div>
+                    </div>
+                    <Link to={`/profile/${user.username}`}>
+                        <img
+                            src={
+                                user.profilePic
+                                    ? PF + user.profilePic
+                                    : PF + "person/noAvatar.png"
+                            }
+                            alt="" className="topbarImg"
+                        />
+                    </Link>
+
+                </div>
 
             </div>
-        </div>
+
+            <div className="searchBarMobileContainer">
+                <form className="searchBar searchBarMobile" onSubmit={(e) => search(e)}>
+                    <input
+                        ref={searchbarText}
+                        placeholder="Search for friends"
+                        className="searchInput"
+
+                    />
+
+                </form>
+                <div onClick={(e) => search(e)} className="searchIconContainerMobile">
+                    <Search />
+                </div>
+
+            </div>
+
+        </>
     )
 }
