@@ -1,13 +1,35 @@
 import './message.css'
 import { format } from 'timeago.js'
+import { axiosInstance } from '../../config'
+import { useState, useEffect } from 'react'
 
-export default function Message({message, own}) {
+export default function Message({ message, own }) {
+    const PF = process.env.REACT_APP_PUBLIC_FOLDER
+    console.log('heres message')
+    console.log(message)
+
+    const [user, setUser] = useState()
+
+    const populateUser = async () => {
+        const user = await axiosInstance.get('/user?userId=' + message.sender)
+        setUser(user)
+    }
+
+    useEffect(() => {
+        populateUser()
+    }, [])
+
     return (
         <div className={own ? "message own" : "message"}>
             <div className="messageTop">
                 <img
                     className='messageImg'
-                    src="https://images.pexels.com/photos/7537863/pexels-photo-7537863.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+                    src={
+                        user?.data.profilePic 
+                            ? PF + user?.data.profilePic 
+                            : PF + 'person/noAvatar.png'
+                            
+                    }
                     alt=""
                 />
                 <p className='messageText'>{message.text}</p>
