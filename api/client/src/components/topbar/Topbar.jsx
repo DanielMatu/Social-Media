@@ -11,16 +11,18 @@ export default function Topbar() {
     const { user } = useContext(AuthContext)
     const PF = process.env.REACT_APP_PUBLIC_FOLDER
     const searchbarText = useRef()
+    const searchbarTextMobile = useRef()
     let history = useHistory()
 
-    const search = async (e) => {
+    const search = async (e, mobile=false) => {
         e.preventDefault()
         let allUsers = await axiosInstance.get('/user/users')
         let filteredUsers = []
         let partsOfName
+        let searchbarTextValue = mobile ? searchbarTextMobile.current.value : searchbarText.current.value 
         allUsers.data.map((u) => {
             partsOfName = u.username.split(' ')
-            partsOfName.some((name) => searchbarText.current.value.includes(name)) && filteredUsers.push(u)
+            partsOfName.some((name) => searchbarTextValue.includes(name)) && filteredUsers.push(u)
         })
         history.push({
             pathname: '/search',
@@ -77,16 +79,16 @@ export default function Topbar() {
             </div>
 
             <div className="searchBarMobileContainer">
-                <form className="searchBar searchBarMobile" onSubmit={(e) => search(e)}>
+                <form className="searchBar searchBarMobile" onSubmit={(e) => search(e, true)}>
                     <input
-                        ref={searchbarText}
+                        ref={searchbarTextMobile}
                         placeholder="Search for friends"
                         className="searchInput"
 
                     />
 
                 </form>
-                <div onClick={(e) => search(e)} className="searchIconContainerMobile">
+                <div onClick={(e) => search(e, true)} className="searchIconContainerMobile">
                     <Search />
                 </div>
 
