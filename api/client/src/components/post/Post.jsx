@@ -16,12 +16,12 @@ export default function Post({ post }) {
     const PF = process.env.REACT_APP_PUBLIC_FOLDER
     const { user: currentUser } = useContext(AuthContext)
 
-    useEffect(() => {
+    const populateComments = async () => {
+        const res = await axiosInstance.get(`/comments/${post._id}`)
+        setComments(res.data)
+    }
 
-        const populateComments = async () => {
-            const res = await axiosInstance.get(`/comments/${post._id}`)
-            setComments(res.data)
-        }
+    useEffect(() => {
         populateComments()
         console.log('just populated them')
 
@@ -94,7 +94,7 @@ export default function Post({ post }) {
                         ))
                     }
                 </div>
-                <CommentPreview />
+                <CommentPreview post={post} populateComments={populateComments} />
             </div>
         </div>
     )

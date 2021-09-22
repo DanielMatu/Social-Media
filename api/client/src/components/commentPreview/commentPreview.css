@@ -7,11 +7,6 @@
     align-items: center;
 }
 
-.commentPreviewTop {
-    display: flex;
-    align-items: center;
-}
-
 .commentTimeAgo {
     color: gray;
 }
