@@ -3,10 +3,9 @@ import { Users } from '../../dummyData'
 import Online from "../online/Online"
 import { useState, useEffect, useContext } from 'react'
 import { axiosInstance } from '../../config'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { AuthContext } from '../../context/AuthContext'
 import { Add, Remove } from '@material-ui/icons'
-import Comment from '../comment/Comment.jsx'
 
 export default function Rightbar({ user }) {
     const PF = process.env.REACT_APP_PUBLIC_FOLDER
@@ -14,32 +13,45 @@ export default function Rightbar({ user }) {
     const { user: currentUser, dispatch } = useContext(AuthContext)
     const [targetUser, setTargetUser] = useState(user)
     const [followed, setFollowed] = useState(currentUser.followings.includes(targetUser?._id))
+    const location = useLocation()
+    const searchResultUser = location?.state
+
+    // if we got here from the results page, set the user state
+    useEffect(() => {
+        if (searchResultUser && Object.keys(searchResultUser).length !== 0) {
+            setTargetUser(searchResultUser)
+        }
+    }, [currentUser])
 
     useEffect(() => {
         setFollowed(currentUser.followings.includes(targetUser?._id))
     }, [currentUser, targetUser])
 
     useEffect(() => {
-        console.log('use effect rightbar triggered')
-        console.log('target rightbar')
-        console.log(targetUser)
+        let didCancel = false
+
         const getFriends = async () => {
             try {
                 let friendList
                 if (targetUser && Object.keys(targetUser).length !== 0) {
                     friendList = await axiosInstance.get('/user/friends/' + targetUser._id)
                 } else { 
-                    console.log('target user doesnt exist')
                     friendList = await axiosInstance.get('/user/friends/' + currentUser._id)
                 }
-
-                setFriends(friendList.data)
-
+                if (!didCancel) {
+                    setFriends(friendList.data)
+                }
             } catch (err) {
                 console.log(err)
             }
         }
+
         getFriends()
+
+        return () => {
+            didCancel=true
+        }
+
     }, [currentUser, targetUser])
 
     const handleClick = async () => {

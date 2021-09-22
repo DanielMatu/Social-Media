@@ -10,7 +10,7 @@ export default function Results({ results }) {
                 {results.map((result) => {
                     return (
                         <>
-                        <Result name={result.username} profilePic={result.profilePic}  />
+                        <Result name={result.username} profilePic={result.profilePic} result={result}  />
                         </>
 
                     )

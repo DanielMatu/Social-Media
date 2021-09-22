@@ -1,7 +1,7 @@
 import './result.css'
 import { useHistory } from 'react-router-dom'
 
-export default function Result({name, profilePic}) {
+export default function Result({ name, profilePic, result }) {
     const PF = process.env.REACT_APP_PUBLIC_FOLDER
     const history = useHistory()
 
@@ -9,24 +9,29 @@ export default function Result({name, profilePic}) {
         const prefix = '/profile/'
         const partsOfName = name.split(' ')
         let urlName = ''
-        partsOfName.map((part) =>{
+        partsOfName.map((part) => {
             urlName += part + "%20"
         })
         const combinedUrl = prefix + urlName
-        let finalUrl = combinedUrl.slice(0,-3)
+        let finalUrl = combinedUrl.slice(0, -3)
         return finalUrl
     }
 
     return (
-        
-        <div className='resultContainer' onClick={() => history.push(computeProfileUrl())}>
-            <img 
+
+        <div className='resultContainer' onClick={() =>
+            history.push({
+                pathname: computeProfileUrl(),
+                state: result
+            })
+        }>
+            <img
                 src={
-                    profilePic 
+                    profilePic
                         ? PF + profilePic
                         : PF + "person/noAvatar.png"
 
-                } 
+                }
                 className="resultImg"
             ></img>
             <div className="resultName">
