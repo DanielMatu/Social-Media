@@ -6,6 +6,7 @@ import { format } from 'timeago.js'
 import { useContext } from 'react'
 import { AuthContext } from '../../context/AuthContext'
 import Comment from '../comment/Comment'
+import CommentPreview from "../commentPreview/CommentPreview"
 
 export default function Post({ post }) {
     const [like, setLike] = useState(post.likes.length)
@@ -93,6 +94,7 @@ export default function Post({ post }) {
                         ))
                     }
                 </div>
+                <CommentPreview />
             </div>
         </div>
     )

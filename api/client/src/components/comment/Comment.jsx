@@ -41,7 +41,7 @@ export default function Comment({ comment }) {
                 </img>
 
 
-                <div className="commentTimeAgo">{commenter?.username} &nbsp; - &nbsp; commented {format(comment.createdAt)}</div>
+                <div className="commentTimeAgo">{commenter?.username} &nbsp; - &nbsp; {format(comment.createdAt)}</div>
             </div>
             <div className="commentBody">
                 {comment.text}
