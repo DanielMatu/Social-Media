@@ -32,6 +32,8 @@
 }
 
 .loginBox {
+    -webkit-box-shadow: 0px 0px 16px -8px rgba(0,0,0,0.68); 
+    box-shadow: 0px 0px 16px -8px rgba(0,0,0,0.68);
     height: 300px;
     padding: 20px;
     background-color: white;
