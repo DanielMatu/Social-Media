@@ -3,6 +3,11 @@ const Post = require('../models/Post')
 const User = require('../models/User')
 // create a post
 
+//purge posts 
+// Post.deleteMany({}).then(() => {
+//     console.log('posts deleted')
+// })
+
 router.post('/', async (req, res) => {
     const newPost = new Post(req.body)
     try {

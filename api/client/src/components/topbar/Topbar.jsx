@@ -5,21 +5,26 @@ import { useContext, useRef } from 'react'
 import { AuthContext } from '../../context/AuthContext'
 import { axiosInstance } from '../../config'
 import { useHistory } from 'react-router-dom'
-import InputAdornment from "@material-ui/core/InputAdornment";
 
 export default function Topbar() {
-    const { user } = useContext(AuthContext)
+    const { user, dispatch } = useContext(AuthContext)
     const PF = process.env.REACT_APP_PUBLIC_FOLDER
     const searchbarText = useRef()
     const searchbarTextMobile = useRef()
     let history = useHistory()
 
-    const search = async (e, mobile=false) => {
+    const startNavToProfile = () => {
+        console.log('started nav')
+        dispatch({type: "UPDATE_TARGET_USER", payload: user})
+        history.push('/profile/' + user.username)
+    }
+
+    const search = async (e, mobile = false) => {
         e.preventDefault()
         let allUsers = await axiosInstance.get('/user/users')
         let filteredUsers = []
         let partsOfName
-        let searchbarTextValue = mobile ? searchbarTextMobile.current.value : searchbarText.current.value 
+        let searchbarTextValue = mobile ? searchbarTextMobile.current.value : searchbarText.current.value
         allUsers.data.map((u) => {
             partsOfName = u.username.split(' ')
             partsOfName.some((name) => searchbarTextValue.includes(name)) && filteredUsers.push(u)
@@ -55,7 +60,6 @@ export default function Topbar() {
                             <Link to='/messenger' className='topbarIconItemLink'>
                                 <Chat />
                             </Link>
-                            <span className="topbarIconBadge">2</span>
                         </div>
 
                         <div className="topbarIconItem">
@@ -63,16 +67,17 @@ export default function Topbar() {
                             <span className="topbarIconBadge">1</span>
                         </div>
                     </div>
-                    <Link to={`/profile/${user.username}`}>
-                        <img
-                            src={
-                                user.profilePic
-                                    ? PF + user.profilePic
-                                    : PF + "person/noAvatar.png"
-                            }
-                            alt="" className="topbarImg"
-                        />
-                    </Link>
+                    <img
+                        onClick={() =>
+                            startNavToProfile()
+                        }
+                        src={
+                            user.profilePic
+                                ? PF + user.profilePic
+                                : PF + "person/noAvatar.png"
+                        }
+                        alt="" className="topbarImg"
+                    />
 
                 </div>
 

@@ -6,22 +6,14 @@ import { axiosInstance } from '../../config'
 import { Link, useLocation } from 'react-router-dom'
 import { AuthContext } from '../../context/AuthContext'
 import { Add, Remove } from '@material-ui/icons'
+import { Chat } from "@material-ui/icons"
 
 export default function Rightbar({ user }) {
     const PF = process.env.REACT_APP_PUBLIC_FOLDER
     const [friends, setFriends] = useState([])
-    const { user: currentUser, dispatch } = useContext(AuthContext)
-    const [targetUser, setTargetUser] = useState(user)
+    const { user: currentUser, dispatch, targetUser } = useContext(AuthContext)
     const [followed, setFollowed] = useState(currentUser.followings.includes(targetUser?._id))
     const location = useLocation()
-    const searchResultUser = location?.state
-
-    // if we got here from the results page, set the user state
-    useEffect(() => {
-        if (searchResultUser && Object.keys(searchResultUser).length !== 0) {
-            setTargetUser(searchResultUser)
-        }
-    }, [currentUser])
 
     useEffect(() => {
         setFollowed(currentUser.followings.includes(targetUser?._id))
@@ -29,13 +21,12 @@ export default function Rightbar({ user }) {
 
     useEffect(() => {
         let didCancel = false
-
         const getFriends = async () => {
             try {
                 let friendList
                 if (targetUser && Object.keys(targetUser).length !== 0) {
                     friendList = await axiosInstance.get('/user/friends/' + targetUser._id)
-                } else { 
+                } else {
                     friendList = await axiosInstance.get('/user/friends/' + currentUser._id)
                 }
                 if (!didCancel) {
@@ -49,28 +40,32 @@ export default function Rightbar({ user }) {
         getFriends()
 
         return () => {
-            didCancel=true
+            didCancel = true
         }
 
     }, [currentUser, targetUser])
 
     const handleClick = async () => {
         try {
-            if (followed){
+            if (followed) {
                 await axiosInstance.put('/user/' + targetUser._id + "/unfollow", {
                     userId: currentUser._id
                 })
-                dispatch({type: "UNFOLLOW", payload:targetUser._id})
+                dispatch({ type: "UNFOLLOW", payload: targetUser._id })
             } else {
                 await axiosInstance.put('/user/' + targetUser._id + "/follow", {
                     userId: currentUser._id
                 })
-                dispatch({type: "FOLLOW", payload:targetUser._id})
+                dispatch({ type: "FOLLOW", payload: targetUser._id })
             }
         } catch (err) {
             console.log(err)
         }
         setFollowed(!followed)
+    }
+
+    const navToMessaging = () => {
+        console.log('gonna nav to messaging with currentid' + currentUser._id + ' and target id ' + targetUser._id)
     }
 
     const HomeRightBar = () => {
@@ -99,9 +94,20 @@ export default function Rightbar({ user }) {
                 {user.username !== currentUser.username && (
                     <button className="rightbarFollowButton" onClick={handleClick}>
                         {followed ? "Unfollow" : "Follow"}
-                        {followed ? <Remove /> : <Add /> }
+                        {followed ? <Remove /> : <Add />}
                     </button>
                 )}
+                {
+                    (targetUser._id !== currentUser._id ) &&
+                    <button
+                        className='messageButton'
+                        onClick={() => navToMessaging()}
+                    >
+
+                        Message &nbsp;
+                        <Chat />
+                    </button>
+                }
                 <h4 className='rightbarTitle'>User Information </h4>
                 <div className="rightbarInfo">
                     <div className="rightbarInfoItem">
@@ -126,12 +132,12 @@ export default function Rightbar({ user }) {
                 <h4 className='rightbarTitle'>User friends</h4>
                 <div className='rightbarFollowings'>
                     {friends.map((friend) => (
-                        <Link 
-                            key={friend._id} 
-                            to={"/profile/" + friend.username} 
-                            style={{textDecoration:"none"}}
-                            onClick={() => setTargetUser(friend)}
-                            >
+                        <Link
+                            key={friend._id}
+                            to={"/profile/" + friend.username}
+                            style={{ textDecoration: "none" }}
+                            onClick={() => dispatch({type: "UPDATE_TARGET_USER", payload: friend})}
+                        >
                             <div className='rightbarFollowing'>
                                 <img
                                     src={friend.profilePicture
