@@ -52,7 +52,7 @@ export default function Topbar() {
                         </div>
 
                         <div className="topbarIconItem">
-                            <Link to='/messenger'>
+                            <Link to='/messenger' className='topbarIconItemLink'>
                                 <Chat />
                             </Link>
                             <span className="topbarIconBadge">2</span>
@@ -89,7 +89,7 @@ export default function Topbar() {
 
                 </form>
                 <div onClick={(e) => search(e, true)} className="searchIconContainerMobile">
-                    <Search />
+                    <Search className='mobileSearchIcon' />
                 </div>
 
             </div>

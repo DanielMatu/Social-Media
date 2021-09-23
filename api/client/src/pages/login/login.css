@@ -64,6 +64,11 @@
     font-size: 20px;
     font-weight: 500;
     cursor: pointer;
+    transition: 0.1s;
+}
+
+.loginButton:hover {
+    background-color: #559fff;
 }
 
 .loginButton:focus {
@@ -94,6 +99,11 @@
     font-size: 20px;
     font-weight: 500;
     cursor: pointer;
+    transition: 0.1s;
+}
+
+.loginRegisterButton:hover {
+    background-color: #71d15d;
 }
 
 
