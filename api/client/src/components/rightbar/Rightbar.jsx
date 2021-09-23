@@ -3,7 +3,7 @@ import { Users } from '../../dummyData'
 import Online from "../online/Online"
 import { useState, useEffect, useContext } from 'react'
 import { axiosInstance } from '../../config'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { AuthContext } from '../../context/AuthContext'
 import { Add, Remove } from '@material-ui/icons'
 import { Chat } from "@material-ui/icons"
@@ -13,7 +13,7 @@ export default function Rightbar({ user }) {
     const [friends, setFriends] = useState([])
     const { user: currentUser, dispatch, targetUser } = useContext(AuthContext)
     const [followed, setFollowed] = useState(currentUser.followings.includes(targetUser?._id))
-    const location = useLocation()
+    const history = useHistory()
 
     useEffect(() => {
         setFollowed(currentUser.followings.includes(targetUser?._id))
@@ -65,7 +65,10 @@ export default function Rightbar({ user }) {
     }
 
     const navToMessaging = () => {
-        console.log('gonna nav to messaging with currentid' + currentUser._id + ' and target id ' + targetUser._id)
+        history.push({
+            pathname: '/messenger',
+            state: { makeConvo: 'true' }
+        })
     }
 
     const HomeRightBar = () => {

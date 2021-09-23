@@ -14,7 +14,6 @@ export default function Topbar() {
     let history = useHistory()
 
     const startNavToProfile = () => {
-        console.log('started nav')
         dispatch({type: "UPDATE_TARGET_USER", payload: user})
         history.push('/profile/' + user.username)
     }
