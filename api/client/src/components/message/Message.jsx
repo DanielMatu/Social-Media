@@ -5,9 +5,6 @@ import { useState, useEffect } from 'react'
 
 export default function Message({ message, own }) {
     const PF = process.env.REACT_APP_PUBLIC_FOLDER
-    console.log('heres message')
-    console.log(message)
-
     const [user, setUser] = useState()
 
     const populateUser = async () => {

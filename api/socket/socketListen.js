@@ -11,13 +11,10 @@ const socketListen = (io) => {
     }
 
     const getUser = (userId) => {
-        return users.find(user => user.userId === userId)
+        let foundUser = users.find(user => user.userId === userId)
+        return foundUser
     }
 
-    // finish notes - remove this ctrlf event
-    io.on('lmaothissomedumbshit', () => {
-        console.log('lul')
-    })
 
     // can also be io.on
     io.sockets.on('connection', (socket) => {
@@ -32,10 +29,18 @@ const socketListen = (io) => {
         //send and get message
         socket.on("sendMessage", ({ senderId, receiverId, text }) => {
             const user = getUser(receiverId)
-            io.to(user.socketId).emit('getMessage', {
-                senderId,
-                text,
-            })
+            console.log('all users')
+            console.log(users)
+            console.log('and receiver')
+            console.log(receiverId)
+            console.log('and sender')
+            console.log(senderId)
+            if (user) {
+                io.to(user.socketId).emit('getMessage', {
+                    senderId,
+                    text,
+                })
+            }
         })
 
         //when disconnect

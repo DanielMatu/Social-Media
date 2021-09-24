@@ -36,10 +36,19 @@ export default function Messenger() {
             console.log('connected')
         })
 
+        socket.current.on("getMessage", (data) => {
+            setArrivalMessage({
+              sender: data.senderId,
+              text: data.text,
+              createdAt: Date.now(),
+            });
+          });
+
 
     }, [])
 
     useEffect(() => {
+        // when a new message comes for a certain convo, display it
         arrivalMessage &&
             currentChat?.members.includes(arrivalMessage.sender) &&
             setMessages((prev) => [...prev, arrivalMessage])
@@ -58,20 +67,10 @@ export default function Messenger() {
         const getConversations = async () => {
             try {
                 const res = await axiosInstance.get('/conversations/' + user._id)
-                // console.log('heres the conversations')
-                // console.log(res.data)
-                // console.log('and the user id')
-                // console.log(user._id)
                 if (!didCancel){
                     setConversationsLoaded(true)
-                    console.log('set conversationsloaded to true')
-
                     setConversations(res.data)
-                    console.log('setconversations to ')
-                    console.log(res.data)
                 }
-
-
                 return () => {
                     didCancel=true
                 }
@@ -81,6 +80,7 @@ export default function Messenger() {
 
         }
         getConversations()
+
     }, [user._id])
 
     useEffect(() => {
@@ -101,11 +101,8 @@ export default function Messenger() {
             // we need conversations to be loaded in for this to work, so just 
             // break if its not loaded yet (it wont be for the first few milliseconds)
             if (!conversationsLoaded){
-                console.log('interupted makenew because convo not loadaed')
                 return
             }
-
-            console.log('went ahead because convos loaded')
             // if makeConvo is true, we must make a conversation with
             // the target user or move it up if one already exists
             if (location.state?.makeConvo) {
@@ -113,12 +110,6 @@ export default function Messenger() {
                 const convoToCreateIndex = conversations.findIndex((conversation) =>
                 (conversation.members.includes(targetUser._id)
                     && conversation.members.includes(user._id)))
-    
-                console.log('heres convotocreate')
-                console.log(convoToCreateIndex)
-                // console.log(conversations[convoToCreateIndex])
-                console.log('heres all conversations')
-                console.log(conversations)
                 // convo found, so we move it up
                 if (convoToCreateIndex !== -1){
                     conversations.unshift(...conversations.splice(convoToCreateIndex, 1))
@@ -128,17 +119,16 @@ export default function Messenger() {
                         senderId: user._id,
                         receiverId: targetUser._id
                     })
-                    console.log('heres the userid')
-                    console.log(user._id)
-
-                    console.log('heres the new convo')
-                    console.log(newConvo)
                     setConversations([newConvo.data, ...conversations])
                 }
                 location.state.makeConvo = false
             }
         }
         makeNewConvo()
+    }, [conversations])
+
+    useEffect(() => {
+        setCurrentChat(conversations[0])
     }, [conversations])
 
     const handleSubmit = async (e) => {

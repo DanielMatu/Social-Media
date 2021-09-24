@@ -2,9 +2,9 @@ const router = require("express").Router()
 const Conversation = require('../models/Conversation')
 
 // purge conversations
-Conversation.deleteMany({}).then(() => {
-    console.log('conversations deleted')
-})
+// Conversation.deleteMany({}).then(() => {
+//     console.log('conversations deleted')
+// })
 
 // new conv
 router.post('/', async (req, res) => {
