@@ -53,7 +53,9 @@ const newHelmetDirectives = {
     ]
 }
 
-newHelmetDirectives['img-src'] = '*'
+newHelmetDirectives['img-src'] = ["'*'"]
+console.log('helmet directives')
+console.log(newHelmetDirectives)
 
 // const outputHelmetDirectives = () => {
 //     console.log('helmet directives after set')
