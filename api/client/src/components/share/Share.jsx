@@ -32,6 +32,7 @@ export default function Share({fetchPosts}) {
         try{
             await axiosInstance.post('/posts', newPost)
             fetchPosts()
+            desc.current.value = ''
             // window.location.reload()
         } catch(err) {
             console.log(err)
