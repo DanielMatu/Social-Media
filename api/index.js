@@ -53,7 +53,7 @@ const newHelmetDirectives = {
     ]
 }
 
-newHelmetDirectives['img-src'] = ["'self'", 'data:', 'blob:', 'https:']
+newHelmetDirectives['img-src'] = ["'self'", 'blob:', 'data:', 'https:', 'blob:https:', '*']
 console.log('helmet directives')
 console.log(newHelmetDirectives)
 

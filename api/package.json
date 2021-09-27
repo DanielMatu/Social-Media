@@ -24,6 +24,5 @@
   },
   "devDependencies": {
     "cross-env": "^7.0.3"
-  },
-  "cacheDirectories": ["node_modules", "client/node_modules"]
+  }
 }
