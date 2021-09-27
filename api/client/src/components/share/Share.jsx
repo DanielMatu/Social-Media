@@ -4,7 +4,7 @@ import { AuthContext } from '../../context/AuthContext'
 import { useContext, useRef, useState } from 'react'
 import { axiosInstance } from '../../config'
 
-export default function Share() {
+export default function Share({fetchPosts}) {
     const { user } = useContext(AuthContext)
     const PF = process.env.REACT_APP_PUBLIC_FOLDER
     const desc = useRef()
@@ -31,6 +31,7 @@ export default function Share() {
         }
         try{
             await axiosInstance.post('/posts', newPost)
+            fetchPosts()
             // window.location.reload()
         } catch(err) {
             console.log(err)
