@@ -50,11 +50,10 @@ const newHelmetDirectives = {
         "wss://" + hostname,
         "https://" + hostname,
         '*'
-    ],
-    imgSrc: [
-        '*'
     ]
 }
+
+newHelmetDirectives['img-src'] = '*'
 
 // const outputHelmetDirectives = () => {
 //     console.log('helmet directives after set')
