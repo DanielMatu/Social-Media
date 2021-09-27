@@ -50,6 +50,9 @@ const newHelmetDirectives = {
         "wss://" + hostname,
         "https://" + hostname,
         '*'
+    ],
+    imgSrc: [
+        '*'
     ]
 }
 
