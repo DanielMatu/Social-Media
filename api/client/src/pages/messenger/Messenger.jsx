@@ -16,36 +16,53 @@ export default function Messenger() {
     const [newMessage, setNewMessage] = useState("")
     const [arrivalMessage, setArrivalMessage] = useState(null)
     const [onlineUsers, setOnlineUsers] = useState([])
-    const socket = useRef()
-    const { user, targetUser } = useContext(AuthContext)
+    const { user, targetUser, socket, dispatch } = useContext(AuthContext)
     const scrollRef = useRef()
     const location = useLocation()
     const [conversationsLoaded, setConversationsLoaded] = useState(false)
 
     useEffect(() => {
-
-        // connect the client side socket
-        if (process.env.NODE_ENV === 'production') {
-            socket.current = io('wss://dmatu-social-media.herokuapp.com')
-
-        } else {
-            socket.current = io('ws://localhost:8800')
+        // if the client is unconnected, connect
+        if (!socket){
+            console.log('this was socket - thats why a new one must be made (should be null)')
+            console.log(socket)
+            let newSocket
+            if (process.env.NODE_ENV === 'production') {
+                newSocket = io('wss://dmatu-social-media.herokuapp.com')
+    
+            } else {
+                newSocket = io('ws://localhost:8800')
+            }
+    
+            newSocket.on('connect', () => {
+                dispatch({type: 'UPDATE_SOCKET', payload: newSocket})
+            })
         }
 
-        socket.current.on('connect', () => {
-            console.log('connected')
-        })
-
-        socket.current.on("getMessage", (data) => {
-            setArrivalMessage({
-              sender: data.senderId,
-              text: data.text,
-              createdAt: Date.now(),
-            });
-          });
-
-
     }, [])
+
+    // add new socket listeners and emitters when a socket changes
+    useEffect(() => {
+        if (socket){
+            socket.on('diconnect', () => {
+                console.log('diconnected with socket id: ')
+                console.log(socket.id)
+            })
+            socket.on("getMessage", (data) => {
+                setArrivalMessage({      
+                  sender: data.senderId,
+                  text: data.text,
+                  createdAt: Date.now(),
+                });
+
+              });
+            socket.emit('addUser', user._id)
+            socket.on('getUsers', (users) => {
+                setOnlineUsers(user.followings.filter(f => users.some(u => u.userId === f))) 
+            })
+        }
+    }, [socket])
+
 
     useEffect(() => {
         // when a new message comes for a certain convo, display it
@@ -54,12 +71,7 @@ export default function Messenger() {
             setMessages((prev) => [...prev, arrivalMessage])
     }, [arrivalMessage, currentChat])
 
-    useEffect(() => {
-        socket.current.emit('addUser', user._id)
-        socket.current.on('getUsers', (users) => {
-            setOnlineUsers(user.followings.filter(f => users.some(u => u.userId === f)))
-        })
-    }, [user])
+
 
     useEffect(() => {
         let didCancel = false
@@ -88,7 +100,6 @@ export default function Messenger() {
             try {
                 const res = await axiosInstance.get('/messages/' + currentChat?._id)
                 setMessages(res.data)
-                // setNewMessage("")
             } catch (err) {
                 console.log(err)
             }
@@ -127,9 +138,16 @@ export default function Messenger() {
         makeNewConvo()
     }, [conversations])
 
+    // open the first convo
     useEffect(() => {
         setCurrentChat(conversations[0])
     }, [conversations])
+
+    useEffect(() => {
+        scrollRef.current?.scrollIntoView({ behavior: "smooth" })
+    }, [messages])
+
+
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -141,7 +159,7 @@ export default function Messenger() {
 
         const receiverId = currentChat.members.find(member => member !== user._id)
 
-        socket.current.emit('sendMessage', {
+        socket.emit('sendMessage', {
             senderId: user._id,
             receiverId,
             text: newMessage
@@ -156,13 +174,11 @@ export default function Messenger() {
         }
     }
 
-    useEffect(() => {
-        scrollRef.current?.scrollIntoView({ behavior: "smooth" })
-    }, [messages])
 
     return (
         <>
             <Topbar />
+
             <div className='messenger'>
                 <div className="chatMenu">
                     <div className="chatMenuWrapper">

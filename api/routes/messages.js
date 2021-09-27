@@ -2,9 +2,9 @@ const router = require("express").Router()
 const Message = require('../models/Message')
 
 // purge messages 
-// Message.deleteMany({}).then(() => {
-//     console.log('messages deleted')
-// })
+Message.deleteMany({}).then(() => {
+    console.log('messages deleted')
+})
 
 // add
 router.post("/", async (req, res) => {

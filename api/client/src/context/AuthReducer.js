@@ -41,6 +41,11 @@ const AuthReducer = (state, action) => {
                 ...state,
                 targetUser: action.payload
             }
+        case "UPDATE_SOCKET":
+            return {
+                ...state,
+                socket: action.payload
+            }
         default:
             return state
     }

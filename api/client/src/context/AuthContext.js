@@ -5,7 +5,8 @@ const INITIAL_STATE = {
     user: null,
     isFetching: false,
     error: false,
-    targetUser: null
+    targetUser: null,
+    socket: null
 }
 
 // const INITIAL_STATE = {
@@ -38,6 +39,7 @@ export const AuthContextProvider = ({ children }) => {
             isFetching: state.isFetching,
             error: state.error,
             targetUser: state.targetUser,
+            socket: state.socket, 
             dispatch
         }} >
             {children}

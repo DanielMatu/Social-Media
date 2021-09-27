@@ -20,6 +20,7 @@ const socketListen = (io) => {
     io.sockets.on('connection', (socket) => {
         //when connect
         console.log('a user connected')
+        console.log(users)
         // take userId and socketId from user
         socket.on('addUser', (userId) => {
             addUser(userId, socket.id)
@@ -36,10 +37,15 @@ const socketListen = (io) => {
             console.log('and sender')
             console.log(senderId)
             if (user) {
+                console.log('there was a user so i send to this one')
+                console.log(user)
+                console.log(user.socketId)
                 io.to(user.socketId).emit('getMessage', {
                     senderId,
                     text,
                 })
+            } else {
+                console.log('no user')
             }
         })
 
